@@ -452,16 +452,14 @@ where
     Ok(res)
 }
 
-/// [`Accumulate`] the output of parser `f` into a container, like `Vec`, until the parser `g`
+/// [`Accumulate`] the output of `parse` into a container, like `Vec`, until the `terminator`
 /// produces a result.
 ///
-/// Returns a tuple of the results of `f` in a `Vec` and the result of `g`.
+/// `parse` keeps going so long as `terminator` produces [`ErrMode::Backtrack`].
+/// To instead chain an error up, see [`cut_err`][crate::combinator::cut_err].
 ///
-/// `f` keeps going so long as `g` produces [`ErrMode::Backtrack`]. To instead chain an error up, see [`cut_err`][crate::combinator::cut_err].
-///
-/// To take a series of tokens, [`Accumulate`] into a `()`
-/// (e.g. with [`.map(|()| ())`][Parser::map])
-/// and then [`Parser::take`].
+/// To [`take`][Parser::take] a series of tokens, [`Accumulate`] `repeat_till` into a `()`,
+/// for example by using [`.map(|()| ())`][Parser::map], and call `take`.
 ///
 /// See also
 /// - [`take_till`][crate::token::take_till] for recognizing up-to a member of a [set of tokens][crate::stream::ContainsToken]
